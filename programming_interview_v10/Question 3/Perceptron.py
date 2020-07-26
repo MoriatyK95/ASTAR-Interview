@@ -1,7 +1,5 @@
 #Author: Huakai Zeng
 #Desrciption: ASTAR interview Q3, MLP with 3 inputs, 2 layers (each layer 4 nodes), 1 output
-#incomplete, still trying to understand keras
-#remarks: Having 16 digits accuracy, how many epochs will the network be able to predict
 
 import numpy as np
 import pandas as pd
@@ -10,7 +8,6 @@ import tensorflow as tf
 if __name__ == '__main__':
     #get training data using pandas
     train_data = pd.read_table("train_data.txt")
-    #turn
     train_df = pd.DataFrame(train_data)
     truth_data = pd.read_table("train_truth.txt")
     train_truth_df = pd.DataFrame(truth_data)
@@ -26,7 +23,7 @@ if __name__ == '__main__':
 
 
 
-
+    #construct MLP neural network, 3 input nodes, 2 hidden layers, 1 output
     model = tf.keras.models.Sequential()
     model.add(tf.keras.layers.Flatten())
     #4 nodes each layer
@@ -37,7 +34,7 @@ if __name__ == '__main__':
     model.add(tf.keras.layers.Dense(1, activation=tf.nn.relu))
 
     model.compile(optimizer= 'adam', loss='mean_squared_error', metrics=[tf.keras.metrics.MeanSquaredError()])
-    model.fit(X, Y, epochs= 600)
+    model.fit(X, Y, epochs= 200)
 
     #get testing_data
     test_data = pd.read_table("test_data.txt")
@@ -47,3 +44,4 @@ if __name__ == '__main__':
 
     prediction = model.predict(X_test)
     #print(prediction)
+    np.savetxt('test_predicted.txt', prediction, header= "y" ,comments='')
